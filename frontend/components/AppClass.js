@@ -117,12 +117,12 @@ export default class AppClass extends React.Component {
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValidEmail = emailRegex.test(this.state.email);
-    if (this.state.email.length == 0 ) {
-      this.setState({ message: "Ouch: email is required"});
+    if (this.state.email.length == 0) {
+      this.setState({ message: "Ouch: email is required" });
       return;
     }
     if (!isValidEmail) {
-      this.setState({ message: "Ouch: email must be a valid email"});
+      this.setState({ message: "Ouch: email must be a valid email" });
       this.setState({ email: "" });
       return;
     }
@@ -157,7 +157,7 @@ export default class AppClass extends React.Component {
       .then((data) => {
         // Handle the response from the server if needed
         // You might update the UI or perform other actions based on the server response
-        this.setState({ message: `${data.message}`, email: ""});
+        this.setState({ message: `${data.message}`, email: "" });
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -170,7 +170,10 @@ export default class AppClass extends React.Component {
       <div id="wrapper" className={className}>
         <div className="info">
           <h3 id="coordinates">{this.getXYMessage()}</h3>
-          <h3 id="steps">You moved {this.state.steps} {this.state.steps === 1 ? 'time' : 'times'}</h3>
+          <h3 id="steps">
+            You moved {this.state.steps}{" "}
+            {this.state.steps === 1 ? "time" : "times"}
+          </h3>
         </div>
         <div id="grid">
           {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (

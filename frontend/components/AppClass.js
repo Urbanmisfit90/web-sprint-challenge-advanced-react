@@ -104,7 +104,10 @@ export default class AppClass extends React.Component {
     }
 
     if (!isValidEmail) {
-      this.setState({ message: "Ouch: email must be a valid email", email: "" });
+      this.setState({
+        message: "Ouch: email must be a valid email",
+        email: "",
+      });
       return;
     }
 
@@ -128,15 +131,33 @@ export default class AppClass extends React.Component {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
+          // If response is not in JSON format, handle it accordingly
+          const isJson = response.headers
+            .get("content-type")
+            ?.includes("application/json");
+          return isJson ? response.json() : response.text();
         }
         return response.json();
       })
       .then((data) => {
-        this.setState({ message: `${data.message}`, email: "" });
+        // Check if the data is an object with a 'message' property
+        if (typeof data === "object" && data.message) {
+          this.setState({ message: `${data.message}`, email: "" });
+        } else if (typeof data === "string") {
+          // Handle cases where the response is a string (non-JSON)
+          this.setState({ message: data, email: "" });
+        } else {
+          // Handle other unexpected cases
+          this.setState({ message: "Unknown error", email: "" });
+        }
       })
       .catch((error) => {
         console.error("Error:", error);
+        // Set the error message in the state
+        this.setState({
+          message: `Error: ${error.message || "Unknown error"}`,
+          email: "",
+        });
       });
   };
 

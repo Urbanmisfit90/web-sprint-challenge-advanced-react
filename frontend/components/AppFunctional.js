@@ -162,6 +162,7 @@ export default function AppFunctional(props) {
         // If response is not in JSON format, handle it accordingly
         const isJson = response.headers.get("content-type")?.includes("application/json");
         const data = isJson ? await response.json() : await response.text();
+        console.log(data)
         setErrorMessage(data.message || "Unknown error");
      throw new Error(`HTTP error! Status: ${response.status}`);
     }
